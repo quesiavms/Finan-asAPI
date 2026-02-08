@@ -199,9 +199,9 @@ public class SaidasController : ControllerBase
     }
 
     [HttpPatch("Parcela/PagarParcelaEspecifica")]
-    public IActionResult pagarParcelaEspecifica([FromQuery] int idSaida,[FromQuery] int numeroDaParcela)
+    public IActionResult pagarParcelaEspecifica([FromQuery] int IdParcela)
     {
-        var parcela = _dbcontext.Parcelas.Where(p => p.IdSaida == idSaida && p.NumeroParcela == numeroDaParcela).FirstOrDefault();
+        var parcela = _dbcontext.Parcelas.Where(p => p.IdParcela == IdParcela).FirstOrDefault();
         
         if(parcela == null)
             return NotFound("Parcela nao encontrada");
@@ -223,7 +223,7 @@ public class SaidasController : ControllerBase
         };
 
         return Ok(dto);
-    }       
+    }      
 
     [HttpDelete("Saida")]
     public IActionResult deletarSaida([FromQuery] int idsaida)
