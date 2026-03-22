@@ -8,9 +8,11 @@
 <body>
 
 <header class="topbar">
-  <div class="logo">💸 Finance Control</div>
+  <div class="logo" onclick="showHome()">💸 Finance Control</div>
 
   <nav class="menu">
+    <div class="menu-item" onclick="showHome()">Home</div>
+
     <div class="menu-item">
       Categorias
       <div class="dropdown">
@@ -37,8 +39,19 @@
   </nav>
 </header>
 
-<main id="content"></main>
+<main id="content">
+</main>
 
+<main>
+  <section id="chat-section">
+    <h2>Chat Financeiro</h2>
+    <textarea id="chatInput" placeholder="Digite sua pergunta aqui..."></textarea>
+    <button id="sendBtn">Enviar</button>
+    <div id="chatResponse">Resposta aparecerá aqui...</div>
+  </section>
+
+  <section id="dynamic-content"></section>
+</main>
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content" id="modalContent"></div>

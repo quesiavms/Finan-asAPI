@@ -2,6 +2,7 @@ const API = 'http://localhost:5151/api/v1';
 const content = document.getElementById('content');
 const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modalContent');
+const dynamicContent = document.getElementById('dynamic-content');
 
 function formatMoney(valor) {
   return Number(valor).toLocaleString('pt-BR', {
@@ -9,6 +10,15 @@ function formatMoney(valor) {
     currency: 'BRL'
   });
 }
+
+/* ================= HOME SCREEN ================= */
+function showHome() {
+  const chatSection = document.getElementById('chat-section');
+  if(chatSection) chatSection.style.display = 'block';
+
+  content.innerHTML = '';
+}
+showHome();
 
 /* ================= MODAL ================= */
 function openModal(type) {
@@ -49,6 +59,10 @@ modal.onclick = e => {
 
 /* ================= TELAS ================= */
 async function showScreen(type) {
+  document.getElementById('chat-section').style.display = 'none';
+  dynamicContent.style.display = 'block';
+  dynamicContent.innerHTML = ''; 
+
   if (type === 'categorias') {
     const res = await fetch(`${API}/Categorias`);
     const data = await res.json();
@@ -339,7 +353,42 @@ async function getOptions(endpoint, labelProp, idProp) {
 }
 
 async function pagarParcela(idParcela) {
-  await fetch(`${API}/Parcela/PagarParcelaEspecifica=${idParcela}`, {
+  await fetch(`${API}/Parcela/PagarParcelaEspecifica?IdParcela=${idParcela}`, {
     method: 'PATCH'
   });
 }
+
+
+/* ================= AI AGENT ================= */
+document.getElementById('sendBtn').addEventListener('click', async () => {
+  const input = document.getElementById('chatInput');
+  const responseDiv = document.getElementById('chatResponse');
+  const prompt = input.value.trim();
+
+  if (!prompt) {
+    alert('Por favor, digite uma pergunta.');
+    return;
+  }
+
+  responseDiv.textContent = 'Carregando...';
+
+  try {
+    const response = await fetch('http://localhost:5014/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    const data = await response.text(); // ou json(), dependendo do seu retorno
+
+    responseDiv.textContent = data;
+  } catch (error) {
+    responseDiv.textContent = `Erro: ${error.message}`;
+  }
+});

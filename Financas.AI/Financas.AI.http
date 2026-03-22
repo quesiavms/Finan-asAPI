@@ -1,0 +1,6 @@
+@Financas.AI_HostAddress = http://localhost:5014
+
+GET {{Financas.AI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
